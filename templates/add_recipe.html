@@ -1,0 +1,109 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Add Recipe
+{% endblock %}
+
+{% block main %}
+
+<form id="addRecipeForm" action="/add_recipe" method="post">
+    <div class="form-group">
+
+
+<div class="row">
+    <!-- Searchable list of ingredients -->
+    <div class="col-12">
+        <h4>Search Available Ingredients</h4>
+        </div>
+    </div>
+</div>
+
+
+<input type="text" id="ingredientSearchBox" name="ingredientSearchBox" placeholder="Search..." autocomplete="off" class="form-control mb-2" onkeyup="filterIngredients()">
+
+
+        <!-- List of ingredients -->
+        <sup>Click Ingredient to add</sup>
+        <ul id="ingredientList" class="list-group">
+        </ul>
+
+
+
+    <!-- Selected Ingredients -->
+    <div class="col-12 mt-3">
+        <h4>Selected Ingredients</h4>
+        <ul id="selectedIngredientsList" class="list-group">
+            <!-- Selected ingredients will be added here -->
+        </ul>
+    </div>
+
+
+<!-- Recipe Name Modal -->
+<div class="modal fade" id="recipeNameModal" tabindex="-1" role="dialog" aria-labelledby="recipeNameModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="recipeNameModalLabel">Name Your New Recipe</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input autocomplete="off" class="form-control" name="recipe_name" placeholder="Recipe Name..." type="text" required>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" form="addRecipeForm" class="btn btn-success">Submit Recipe</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    <br>
+    <!-- Trigger for Recipe Name Modal -->
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#recipeNameModal">Create New Recipe</button>
+</form>
+
+<br>
+<br>
+
+<br>
+
+
+<div><button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#addIngredientModal">Add Ingredient</button></div>
+
+
+
+<!-- Add Ingredient Modal -->
+<div class="modal fade" id="addIngredientModal" tabindex="-1" role="dialog" aria-labelledby="addIngredientModal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="addIngredientModal">Add Ingredient to List</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <div class="modal-body">
+              <form id="addIngredientModal" action="/add_ingredient" method="post">
+                  <div class="form-group">
+                      <input type="text" class="form-control" id="newlistIngredientName" name="ingredient_name" placeholder="Ingredient Name" required autofocus>
+                  </div>
+                  <!-- Include other fields as necessary -->
+                  <br>
+                  <button type="submit" class="btn btn-primary">Add Ingredient to database</button>
+              </form>
+          </div>
+      </div>
+  </div>
+</div>
+
+
+<script src="{{ url_for('static', filename='project.js') }}"></script>
+
+
+
+
+
+
+{% endblock %}

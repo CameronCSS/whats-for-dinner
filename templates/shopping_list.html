@@ -1,0 +1,242 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Shopping List
+{% endblock %}
+
+{% block main %}
+
+        <div class="container text-center" style="background-color: #f5f5f7;">
+            <h1 class="mb-5">Shopping List</h1>
+<!-- Store Toggle Form -->
+<form id="storeToggleForm" action="/update_store" method="post">
+    <label for="selected_store">Select Store: </label>
+    <select id="selected_store" name="selected_store" onchange="this.form.submit()">
+        {% for store in stores %}
+            <option value="{{ store.name.lower() }}"
+                {% if session.get('selected_store')|lower == store.name|lower %}
+                    selected
+                {% elif not session.get('selected_store') and store.name|lower == favorite_store|lower %}
+                    selected
+                {% endif %}>
+                {{ store.name }}
+            </option>
+        {% endfor %}
+    </select>
+</form>
+<br>
+
+
+
+<!-- Start of the form -->
+<form id="shoppingListForm" action="/shopping_list" method="post">
+    <table class="table shopping-list-table">
+        <tbody>
+            <tr class="item">
+                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                <td>Ingredient</td>
+                <td>{{ session.get('selected_store') | capitalize }} Aisle</td>
+            </tr>
+{% for ingredient in ingredients %}
+<tr class="item">
+    <td>
+        <label class="custom-label">
+            <input type="checkbox" value="{{ ingredient['ingredient_id'] }}" name="ingredient_ids" onchange="updateCheckboxState(this, '{{ ingredient['ingredient_id'] }}')" {% if ingredient['checked'] %} checked {% endif %}/>
+            <span class="checkbox"></span>
+        </label>
+    </td>
+    <td class="ingredient-column">{{ ingredient['name'] }}</td>
+    <td>
+        {% set aisle_column = (session.get('selected_store', 'default') | lower) ~ '_aisle' %}
+        {% if ingredient[aisle_column] %}
+            <span>{{ ingredient[aisle_column] }}</span>
+            <br>
+            <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#aisleModal" style="padding-top: 0;" onclick="prepareModal('/add_aisle/{{ ingredient['ingredient_id'] }}', '{{ aisle_column }}', {{ ingredient['ingredient_id'] }}, '{{ ingredient['name'] }}')">Edit</button>
+        {% else %}
+        <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#aisleModal" style="padding-top: 0;" onclick="prepareModal('/add_aisle/{{ ingredient['ingredient_id'] }}', '{{ aisle_column }}', {{ ingredient['ingredient_id'] }}, '{{ ingredient['name'] }}')">Add</button>
+
+        {% endif %}
+    </td>
+</tr>
+{% endfor %}
+
+        </tbody>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addlistIngredientModal">Add Ingredient</button>
+        <p><em>*Adding ingredients manually will still check against on hand ingredients.</em></p>
+
+    </table>
+</form>
+
+
+<!-- Add Ingredient Modal -->
+<div class="modal fade" id="addlistIngredientModal" tabindex="-1" role="dialog" aria-labelledby="addlistIngredientModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addlistIngredientModal">Add Ingredient to List</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="addlistIngredientModal" action="/add_list_ingredient" method="post">
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="newlistIngredientName" name="ingredient_name" placeholder="Ingredient Name" required>
+                    </div>
+                    <!-- Include other fields as necessary -->
+                    <br>
+                    <button type="submit" class="btn btn-primary">Add Ingredient to list</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+
+<!-- View Recipes Button -->
+<div class="left-align-button mt-3">
+    <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#recipesModal">
+        View Recipes
+    </button>
+</div>
+
+        <!-- Recipes Being Shopped Modal -->
+        <div class="modal fade" id="recipesModal" tabindex="-1" role="dialog" aria-labelledby="recipesModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="recipesModalLabel">Recipes Being Shopped</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                            {% for recipe in recipes %}
+                                <li class="recipe-group-item">{{ recipe.name }}</li>
+                            {% else %}
+                                <li class="recipe-group-item">No recipes currently being shopped</li>
+                            {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+<br>
+<p><em>* Ingredients will stay 'Checked' until you CLEAR or FINISH shopping.</em></p>
+<p><em>Even changing recipes the items you have checked will stay checked</em></p>
+
+<!-- Clear Shopping List Button -->
+<form action="/clear_shopping_list" method="post">
+    <button type="submit" class="btn btn-warning mt-4">Clear Shopping List</button>
+</form>
+
+
+<!-- Aisle Modal -->
+<div class="modal fade" id="aisleModal" tabindex="-1" aria-labelledby="aisleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <form id="aisleForm" method="post">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="aisleModalLabel">Edit Aisle Number</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <input type="text" name="aisle_number" class="form-control" placeholder="Enter Aisle Number" required>
+            <input type="hidden" name="ingredient_id" id="ingredientId">
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Save changes</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+  <!-- Finished Shopping Button -->
+<form action="/finish_shopping" method="post">
+    <button type="submit" class="btn btn-success mt-4">Finished Shopping</button>
+</form>
+<br>
+<br>
+
+<div class="save-list-container">
+    <div class="centered-button">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#uniqueNameListModal">Save List</button>
+    </div>
+
+    <span class="question-mark-icon" onclick="togglePopup(this)">
+        <img src="{{url_for('static', filename='question_mark.png')}}" alt="Info">
+        <div class="popup-modal" id="popupNote">
+            <em>NOTE: Saved lists include ALL ingredients from the selected recipes.
+                <br>Upon reloading a list, it will update to exclude ingredients you currently have on hand.</em>
+        </div>
+    </span>
+</div>
+
+
+
+<!-- Modal with Updated IDs and Classes -->
+<div class="modal fade" id="uniqueNameListModal" tabindex="-1" role="dialog" aria-labelledby="uniqueNameListModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="uniqueNameListModalLabel">Name Your Shopping List</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Updated ID for input -->
+                <input type="text" id="uniqueListName" class="form-control" placeholder="List Name">
+            </div>
+            <div class="modal-footer">
+                <!-- Updated onClick function to match new ID -->
+                <button type="button" class="btn btn-primary" onclick="submitShoppingList()">Save List</button>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+<br>
+
+
+
+
+
+<!-- Confirmation Modal -->
+<div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmationModalLabel">Confirm Action</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="confirmationMessage">Are you sure you want to do this?</p>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" id="confirmBtn">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<form id="formToSubmit" method="post" style="display: none;"></form>
+
+<script src="{{ url_for('static', filename='project.js') }}"></script>
+
+
+
+
+{% endblock %}
+
+
+

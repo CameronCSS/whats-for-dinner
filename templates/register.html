@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Register
+{% endblock %}
+
+{% block main %}
+<header>
+    <img class="w-20 mx-auto mb-5" src="static/running_cart.jpg" />
+  </header>
+    <form action="/register" method="post">
+        <div class="mb-3">
+            <input autocomplete="off" autofocus class="form-control mx-auto w-auto" name="username" placeholder="Username" type="text">
+        </div>
+        <div class="mb-3">
+            <input class="form-control mx-auto w-auto" name="password" placeholder="Password" type="password">
+        </div>
+        <div class="mb-3">
+            <input class="form-control mx-auto w-auto" name="confirmation" placeholder="Confirm Password" type="password">
+        </div>
+
+<small class="form-text text-muted red-text"><em>*There are NO password requirements. Use an easy to remember password not used for anything else.</em></small>
+<br>
+<br>
+
+        <button class="btn btn-primary" type="submit">Register</button>
+    </form>
+
+    <br>
+<hr>
+<h5>PLEASE NOTE:
+    <br>
+    <br><em>* This is an experimental tool built for use by myself and close family / friends</em></h5>
+{% endblock %}

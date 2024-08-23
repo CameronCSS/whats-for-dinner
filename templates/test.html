@@ -1,0 +1,160 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    testing page
+{% endblock %}
+
+{% block main %}
+
+
+<div id="mySidenav" class="sidenav">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+  {% if session["user_id"] %}
+  <!-- Toggle Button -->
+  <button id="sidebarToggle" class="btn">❯</button>
+<aside class="sidebar container-fancy">
+  <div class="container">
+      <div class="row">
+  {% if ingredients_on_hand %}
+  <div class="header">
+      <h2>Ingredients On Hand</h2>
+      <sup><em>On hand ingredients are deleted after 7 days</em></sup>
+  </div>
+  <div id="onhand" class="table-responsive" style=" overflow-y: auto;">
+      <table class="table table-striped">
+          <thead>
+              <tr>
+                  <th scope="col">Ingredient</th>
+                  <th scope="col">Date Added</th>
+                  <th scope="col">Action</th>
+              </tr>
+          </thead>
+          <tbody>
+              {% for ingredient in ingredients_on_hand %}
+                  <tr>
+                      <td>{{ ingredient['ingredient_name'] }}</td>
+                      <td>{{ ingredient['date_updated'] }}</td>
+                      <td>
+                          <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#confirmationModal" onclick="setFormAction('/remove_onhand/{{ ingredient['ingredient_name'] }}', 'Are you sure you want to remove {{ ingredient['ingredient_name'] }} from on hand?');" style="padding: 0;">Remove</button>
+                      </td>
+                  </tr>
+              {% endfor %}
+          </tbody>
+      </table>
+  </div>
+  {% else %}
+      <h4 style="color: red;">No Ingredients On Hand</h4>
+      <br>
+  {% endif %}
+
+
+  <div class="row">
+      <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#addIngredientModal">
+          Add On Hand Ingredient
+      </button>
+    <a href="/ingredients" class="btn btn-link">Edit Ingredients</a>
+
+  </div>
+  </div>
+
+
+  <!-- Add Ingredient Modal -->
+  <div class="modal fade" id="addIngredientModal" tabindex="-1" role="dialog" aria-labelledby="addIngredientModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title" id="addIngredientModalLabel">Add On Hand Ingredient</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+              <div class="modal-body">
+                  <form action="/" method="post">
+                      <input type="text" name="ingredient_name" id="newIngredientName" placeholder="Ingredient Name..." class="form-control" required>
+                      <br>
+                      <button class="btn btn-success" type="submit">Add</button>
+                  </form>
+              </div>
+          </div>
+      </div>
+  </div>
+</aside>
+
+{% endif %}
+</div>
+
+<!-- Use any element to open the sidenav -->
+<span onclick="openNav()">open</span>
+
+
+
+
+
+<style>
+/* The side navigation menu */
+.sidenav {
+  height: 100%; /* 100% Full-height */
+  width: 0; /* 0 width - change this with JavaScript */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Stay on top */
+  top: 0; /* Stay at the top */
+  right: 0;
+  background-color: #111; /* Black*/
+  overflow-x: hidden; /* Disable horizontal scroll */
+  padding-top: 60px; /* Place content 60px from the top */
+  transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+}
+
+/* The navigation menu links */
+.sidenav a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #818181;
+  display: block;
+  transition: 0.3s;
+}
+
+/* When you mouse over the navigation links, change their color */
+.sidenav a:hover {
+  color: #f1f1f1;
+}
+
+/* Position and style the close button (top right corner) */
+.sidenav .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
+}
+
+/* Style page content - use this if you want to push the page content to the right when you open the side navigation */
+#main {
+  transition: margin-left .5s;
+  padding: 20px;
+}
+
+/* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}
+
+</style>
+
+<script>
+
+/* Set the width of the side navigation to 250px */
+function openNav() {
+  document.getElementById("mySidenav").style.width = "250px";
+}
+
+/* Set the width of the side navigation to 0 */
+function closeNav() {
+  document.getElementById("mySidenav").style.width = "0";
+}
+
+</script>
+
+{% endblock %}

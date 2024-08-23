@@ -1,0 +1,290 @@
+
+.container, .main-content, .sidebar, .modal-content {
+    background-color: #f5f5f7;
+}
+
+
+.pagination-custom {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    padding-left: 0;
+}
+
+
+.centered-ingredients {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.btn.btn-link.btn-sm {
+    font-size: 12px;
+    padding: 0;
+    line-height: 1;
+}
+
+.ingredient-column {
+    width: 150px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: left;
+    background-color: #f5f5f7;
+}
+
+table {
+    table-layout: auto;
+    width: 100%;
+    background-color: #f5f5f7;
+}
+
+.item {
+    display: flex;
+    align-items: bottom;
+    gap: 24px;
+    width: auto;
+    background-color: #f5f5f7;
+}
+
+.custom-label {
+    margin: 0;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    background-color: #f5f5f7;
+}
+
+.item input[type="checkbox"] {
+position: absolute;
+transform: scale(0);
+background-color: #f5f5f7;
+}
+
+
+input:checked ~ .checkbox {
+    transform: rotate(30deg);
+    width: 15px;
+    height: 25px;
+    margin: -5px 7px 0 8px;
+    border-color: #284B63;
+    border-width: 4px;
+    border-top-color: transparent;
+    border-left-color: transparent;
+    border-radius: 0;
+    background-color: #f5f5f7;
+}
+
+.checkbox {
+    display: block;
+    width: inherit;
+    height: inherit;
+    border: 2px solid #999;
+    border-radius: 4px;
+    transition: all 0.2s cubic-bezier(0, 0.01, 0.23, 0.8);
+    background-color: #f5f5f7;
+}
+
+.on-hand-highlight {
+    font-size: 15px;
+    color: #2e944b;
+    font-weight: bold
+}
+
+.hidden {
+    display: none;
+}
+
+
+.save-list-container {
+    align-items: center; /* Vertically center the elements within the container */
+}
+
+.centered-button {
+    flex: 1; /* Allow the button to take available horizontal space */
+}
+
+.question-mark-icon {
+    cursor: pointer;
+}
+
+.popup-modal {
+    display: none;
+    background-color: #f5f5f7;
+    border: 1px solid #dcdcdc;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+
+
+
+.red-text {
+    color: red !important;
+}
+
+.heart-icon {
+    cursor: pointer;
+    color: #3C6E71; /* Non-favorite color */
+    font-size: 24px; /* Adjust size as needed */
+}
+
+.heart-icon.favorite {
+    color: #3C6E71; /* Favorite color */
+}
+
+
+
+.left-align-button {
+    text-align: left !important;
+}
+
+
+.recipe-group-item {
+    text-align: left !important;
+    background-color: #f5f5f7;
+
+}
+
+.container-fancy {
+    background-color: #f5f5f7; /* Or any other desired background color */
+    padding: 20px; /* Adjust padding as needed */
+    border-radius: 10px; /* Add rounded corners if desired */
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
+}
+
+
+.b-example-divider {
+    height: 3rem;
+    background-color: rgba(0, 0, 0, .1);
+    border: solid rgba(0, 0, 0, .15);
+    border-width: 1px 0;
+    box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+  }
+
+  .bi {
+    vertical-align: -.125em;
+    fill: currentColor;
+  }
+
+  .feature-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 4rem;
+    height: 4rem;
+    margin-bottom: 1rem;
+    font-size: 2rem;
+    color: #f5f5f7;
+    border-radius: .75rem;
+  }
+
+  .icon-link {
+    display: inline-flex;
+    align-items: center;
+  }
+  .icon-link > .bi {
+    margin-top: .125rem;
+    margin-left: .125rem;
+    transition: transform .25s ease-in-out;
+    fill: currentColor;
+  }
+  .icon-link:hover > .bi {
+    transform: translate(.25rem);
+  }
+
+  .icon-square {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+    font-size: 1.5rem;
+    border-radius: .75rem;
+  }
+
+  .rounded-4 { border-radius: .5rem; }
+  .rounded-5 { border-radius: 1rem; }
+
+  .text-shadow-1 { text-shadow: 0 .125rem .25rem rgba(0, 0, 0, .25); }
+  .text-shadow-2 { text-shadow: 0 .25rem .5rem rgba(0, 0, 0, .25); }
+  .text-shadow-3 { text-shadow: 0 .5rem 1.5rem rgba(0, 0, 0, .25); }
+
+  .card-cover {
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+
+  }
+
+
+      /* Default styles (mobile-first approach) */
+      .main-wrapper {
+        display: flex;
+        flex-direction: column;
+        background-color: #f5f5f7;
+    }
+
+    .sidebar {
+        flex-basis: 250px;
+        order: 2;
+        margin: 10px; /* Add some margin around the sidebar for spacing */
+        background-color: #f5f5f7;
+    }
+
+    .main-content {
+        order: 1;
+        flex-grow: 1;
+    }
+
+    @media (min-width: 768px) {
+        /* Styles for larger screens (PC) */
+        .main-wrapper {
+            flex-direction: row;
+        }
+
+        .sidebar {
+            flex-basis: 250px;
+            flex-shrink: 0;
+            order: 2;
+        }
+
+        .main-content {
+            flex-grow: 1;
+            order: 2;
+        }
+    }
+
+
+/* Apply the background color to the table */
+.shopping-list-table {
+    background-color: #f5f5f7;
+}
+
+/* Apply the background color to each table row */
+.shopping-list-table tr {
+    background-color: #f5f5f7;
+}
+
+/* Apply the background color to each table item */
+.shopping-list-table td {
+    background-color: #f5f5f7;
+}
+
+
+/* Apply the background color to the table */
+.table-striped {
+    background-color: #f5f5f7;
+}
+
+/* Apply the background color to each table row */
+.table-striped tr {
+    background-color: #f5f5f7;
+}
+
+/* Apply the background color to each table item */
+.table-striped td {
+    background-color: #f5f5f7;
+}

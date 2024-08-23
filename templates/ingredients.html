@@ -1,0 +1,197 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Edit Ingredients
+{% endblock %}
+
+{% block main %}
+
+<!-- Aisle Modal -->
+<div class="modal fade" id="aisleModal" tabindex="-1" aria-labelledby="aisleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <form id="aisleForm" method="post">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="aisleModalLabel">Add Aisle Number</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <input type="text" name="aisle_number" class="form-control" placeholder="Enter Aisle Number" required autocomplete="off">
+          <input type="hidden" name="ingredient_id" id="ingredientId">
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Ingredient Modal -->
+<div class="modal fade" id="ingredientModal" tabindex="-1" aria-labelledby="ingredientModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <form id="ingredientForm" method="post" action="/edit_ingredient">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="ingredientModalLabel">Change Ingredient name</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <input type="text" name="ingredient_name" class="form-control" id="editIngredientName" placeholder="New Ingredient Name..." required autocomplete="off">
+            <input type="hidden" name="ingredient_id" id="ingredientId">
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Save changes</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+<br>
+<h2>All Ingredients</h2>
+<br>
+<br>
+<br>
+
+<!-- Display Favorite Store or Select Button -->
+<div class="favorite-store-section">
+  {% if fav_store %}
+      <h4>Your Favorite store: <span style="color: green;">{{ fav_store }}</span></h4>
+      <!-- Button to open the modal to edit the favorite store -->
+      <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#favoriteStoreModal">
+          Edit Favorite Store
+      </button>
+      <p><em>You can also add a New Store here</em></p>
+  {% else %}
+      <!-- Button to open the modal to select the favorite store -->
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#favoriteStoreModal">
+          Select Favorite Store
+      </button>
+  {% endif %}
+</div>
+
+
+
+
+<div id="onhand" class="table-responsive" style="max-height: 800px; overflow-y: auto;">
+  <table class="table table-striped">
+      <thead>
+          <tr>
+              <th scope="col">Ingredient</th>
+              <th>{{ fav_store | capitalize }} Aisle</th>
+          </tr>
+      </thead>
+      <tbody>
+          {% for ingredient in all_ingredients %}
+              <tr>
+                  <td>
+                      <span>{{ ingredient['name'] }}</span>
+                      <br>
+                      <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#ingredientModal" style="padding-top: 0;" onclick="prepareModal('/edit_ingredient/{{ ingredient['ingredient_id'] }}', '', {{ ingredient['ingredient_id'] }}, '{{ ingredient['name'] }}')">Edit</button>
+                    </td>
+                  <td>
+                    {% set aisle_column = (fav_store | lower) ~ '_aisle' %}
+                    <!-- Display aisle data based on selected store -->
+                    {% if ingredient[aisle_column] %}
+                        <span>{{ ingredient[aisle_column] }}</span>
+                        <br>
+                        <!-- Add/Edit Button for the aisle -->
+                        <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#aisleModal" style="padding-top: 0;" onclick="prepareModal('/add_aisle/{{ ingredient['ingredient_id'] }}', '{{ aisle_column }}', {{ ingredient['ingredient_id'] }}, '{{ ingredient['name'] }}')">Edit</button>
+                    {% else %}
+                    <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#aisleModal" style="padding-top: 0;" onclick="prepareModal('/add_aisle/{{ ingredient['ingredient_id'] }}', '{{ aisle_column }}', {{ ingredient['ingredient_id'] }}, '{{ ingredient['name'] }}')">Add</button>
+
+                    {% endif %}
+                  </td>
+              </tr>
+          {% endfor %}
+      </tbody>
+  </table>
+</div>
+
+<br>
+
+<div><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addIngredientModal">Add Ingredient</button></div>
+
+
+
+<!-- Add Ingredient Modal -->
+<div class="modal fade" id="addIngredientModal" tabindex="-1" role="dialog" aria-labelledby="addIngredientModal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="addIngredientModal">Add Ingredient to List</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <div class="modal-body">
+              <form id="addIngredientModal" action="/add_ingredient" method="post">
+                  <div class="form-group">
+                      <input type="text" class="form-control" id="newlistIngredientName" name="ingredient_name" placeholder="Ingredient Name" required autofocus>
+                  </div>
+                  <!-- Include other fields as necessary -->
+                  <br>
+                  <button type="submit" class="btn btn-primary">Add Ingredient to database</button>
+              </form>
+          </div>
+      </div>
+  </div>
+</div>
+
+
+
+    <br>
+    <br>
+
+
+
+
+    <!-- Favorite Store Modal -->
+<div class="modal fade" id="favoriteStoreModal" tabindex="-1" role="dialog" aria-labelledby="favoriteStoreModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+      <div class="modal-content">
+          <form action="/ingredients" method="post">
+              <input type="hidden" name="form_type" value="fav_store">
+              <div class="modal-header">
+                  <h5 class="modal-title" id="favoriteStoreModalLabel">Select Your Favorite Store</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+              <div class="modal-body">
+                  <div class="form-group">
+                      <label for="storeSelect">Choose Store:</label>
+
+                      <select id="storeSelect" name="store_name" class="form-control">
+                          <option value="">--Select Store--</option>
+                          {% for store in stores %}
+                              <option value="{{ store.name }}">{{ store.name }}</option>
+                          {% endfor %}
+                      </select>
+
+                  </div>
+                  <div class="form-group">
+                      <label for="newStoreName">Or Add New Store:</label>
+                      <input type="text" id="newStoreName" name="new_store" class="form-control" placeholder="New Store Name" autofocus>
+                  </div>
+              </div>
+              <div class="modal-footer">
+                  <button type="submit" class="btn btn-primary">Save Favorite Store</button>
+              </div>
+          </form>
+      </div>
+  </div>
+</div>
+
+
+
+<script src="{{ url_for('static', filename='project.js') }}"></script>
+
+    {% endblock %}
+
