@@ -1,6 +1,0 @@
-runtime: python39
-<<<<<<< HEAD
-entrypoint: gunicorn -b :$PORT app:app
-=======
-entrypoint: gunicorn -b :$PORT app:app
->>>>>>> 0a4943417c6e71c1be91080910a75dfc6ed9800b
