@@ -2,6 +2,10 @@
 
 #### [Video Demo](<https://www.youtube.com/watch?v=OztMCgm2H9A>)
 
+> [!IMPORTANT] 
+> #### You can create an account and try the BETA [HERE](https://whats4dinner.app)
+> #### <sup>*Note: I may shut off registrations if it gets too busy*</sup>
+
 ### Preview 
 
 ![image](https://github.com/user-attachments/assets/7a31e98a-eeb9-460d-8456-184c76facbc5)
