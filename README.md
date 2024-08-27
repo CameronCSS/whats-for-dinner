@@ -2,6 +2,11 @@
 
 #### [Video Demo](<https://www.youtube.com/watch?v=OztMCgm2H9A>)
 
+### Preview 
+
+![image](https://github.com/user-attachments/assets/7a31e98a-eeb9-460d-8456-184c76facbc5)
+
+
 ## Overview
 
 We’ve all faced the age-old question: *"What's for dinner?"* Every single day we have to check the fridge, check your pantry, decide what we want, and finally make a shopping list because we realize there's no food in the house.
